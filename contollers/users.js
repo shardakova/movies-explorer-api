@@ -46,11 +46,7 @@ async function createUser(req, res, next) {
 
 async function getUser(req, res, next) {
   try {
-    const userId = req.user._id;
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return next(new BadRequestError());
-    }
-    const user = await User.findById(userId, defaultFields);
+    const user = await User.findById(req.user._id, defaultFields);
     if (!user) {
       return next(new NotFoundError());
     }
@@ -81,6 +77,9 @@ async function updateUser(req, res, next) {
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       return next(new BadRequestError());
+    }
+    if (err.name === 'MongoServerError' && err.code === 11000) {
+      return next(new ConflictError());
     }
     return next(err);
   }

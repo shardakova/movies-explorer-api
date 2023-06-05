@@ -5,7 +5,7 @@ const validationSchemas = require('../utils/validationSchemas');
 
 const router = express.Router();
 
-router.get('/users/me', controller.getUser);
-router.patch('/users/me', celebrate(validationSchemas.updateUser), controller.updateUser);
+router.get('/me', controller.getUser);
+router.patch('/me', celebrate(validationSchemas.updateUser), controller.updateUser);
 
 module.exports = router;

@@ -5,8 +5,8 @@ const validationSchemas = require('../utils/validationSchemas');
 
 const router = express.Router();
 
-router.get('/movies', controller.getMovies);
-router.post('/movies', celebrate(validationSchemas.createMovie), controller.createMovie);
-router.delete('/movies/:id', celebrate(validationSchemas.objectIdParam), controller.deleteMovie);
+router.get('/', controller.getMovies);
+router.post('/', celebrate(validationSchemas.createMovie), controller.createMovie);
+router.delete('/:id', celebrate(validationSchemas.objectIdParam), controller.deleteMovie);
 
 module.exports = router;

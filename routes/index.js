@@ -13,8 +13,8 @@ router.post('/signin', celebrate(validationSchemas.signIn), usersController.sign
 router.post('/signup', celebrate(validationSchemas.createUser), usersController.createUser);
 router.post('/signout', usersController.signOut);
 
-router.use('/', auth, users);
-router.use('/', auth, movies);
+router.use('/users', auth, users);
+router.use('/movies', auth, movies);
 
 router.use((req, res, next) => next(new NotFoundError()));
 
