@@ -30,6 +30,7 @@ const createUser = {
 const updateUser = {
   body: Joi.object({
     email: Joi.string().required().email(),
+    password: Joi.string().optional().allow(''),
     name: Joi.string()
       .required()
       .trim()

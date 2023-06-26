@@ -29,6 +29,10 @@ async function createUser(req, res, next) {
     });
     await user.validate();
     await user.save();
+    const token = jwt.sign({ _id: user._id }, config.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+    res.cookie('token', token, { httpOnly: true });
     return res.send({
       email: user.email,
       name: user.name,
@@ -58,13 +62,14 @@ async function getUser(req, res, next) {
 
 async function updateUser(req, res, next) {
   try {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     const id = req.user._id;
     const user = await User.findOneAndUpdate({
       _id: id,
     }, {
       name,
       email,
+      ...(password ? { password: bcrypt.hashSync(password, 10) } : {}),
     }, {
       fields: defaultFields,
       new: true,
